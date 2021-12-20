@@ -68,13 +68,22 @@ module user_proj_example #(
     // IRQ
     output [2:0] irq
 );
+    /*
     wire clk;
     wire rst;
-
+    */
     wire [`MPRJ_IO_PADS-1:0] io_in;
     wire [`MPRJ_IO_PADS-1:0] io_out;
     wire [`MPRJ_IO_PADS-1:0] io_oeb;
 
+    wire [15:0] sum1;
+    wire cout1;
+    wire [15:0] a1, b1;
+    
+    assign {b1,a1}=[`MPRJ_IO_PADS-7:0] io_in;
+    assign io_out={21'd0,cout1,sum1};
+    assign io_oeb={21'd0,17'd1};
+    /*
     wire [31:0] rdata; 
     wire [31:0] wdata;
     wire [BITS-1:0] count;
@@ -103,63 +112,75 @@ module user_proj_example #(
     // Assuming LA probes [65:64] are for controlling the count clk & reset  
     assign clk = (~la_oenb[64]) ? la_data_in[64]: wb_clk_i;
     assign rst = (~la_oenb[65]) ? la_data_in[65]: wb_rst_i;
-
-    counter #(
-        .BITS(BITS)
-    ) counter(
-        .clk(clk),
-        .reset(rst),
-        .ready(wbs_ack_o),
-        .valid(valid),
-        .rdata(rdata),
-        .wdata(wbs_dat_i),
-        .wstrb(wstrb),
-        .la_write(la_write),
-        .la_input(la_data_in[63:32]),
-        .count(count)
-    );
-
+     */
+     KSA16 ins1(sum, cout, a, b);
 endmodule
 
-module counter #(
-    parameter BITS = 32
-)(
-    input clk,
-    input reset,
-    input valid,
-    input [3:0] wstrb,
-    input [BITS-1:0] wdata,
-    input [BITS-1:0] la_write,
-    input [BITS-1:0] la_input,
-    output ready,
-    output [BITS-1:0] rdata,
-    output [BITS-1:0] count
-);
-    reg ready;
-    reg [BITS-1:0] count;
-    reg [BITS-1:0] rdata;
+module BigCircle(output G, P, input Gi, Pi, GiPrev, PiPrev);
+  
+  wire e;
+  and #(1) (e, Pi, GiPrev);
+  or #(1) (G, e, Gi);
+  and #(1) (P, Pi, PiPrev);
+  
+endmodule
 
-    always @(posedge clk) begin
-        if (reset) begin
-            count <= 0;
-            ready <= 0;
-        end else begin
-            ready <= 1'b0;
-            if (~|la_write) begin
-                count <= count + 1;
-            end
-            if (valid && !ready) begin
-                ready <= 1'b1;
-                rdata <= count;
-                if (wstrb[0]) count[7:0]   <= wdata[7:0];
-                if (wstrb[1]) count[15:8]  <= wdata[15:8];
-                if (wstrb[2]) count[23:16] <= wdata[23:16];
-                if (wstrb[3]) count[31:24] <= wdata[31:24];
-            end else if (|la_write) begin
-                count <= la_write & la_input;
-            end
-        end
-    end
+module SmallCircle(output Ci, input Gi);
+  
+  buf #(1) (Ci, Gi);
+  
+endmodule
+
+module Square(output G, P, input Ai, Bi);
+  
+  and #(1) (G, Ai, Bi);
+  xor #(2) (P, Ai, Bi);
+  
+endmodule
+
+module Triangle(output Si, input Pi, CiPrev);
+  
+  xor #(2) (Si, Pi, CiPrev);
+  
+endmodule
+
+
+module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
+  
+  wire cin = 1'b0;
+  wire [15:0] c;
+  wire [15:0] g, p;
+  Square sq[15:0](g, p, a, b);
+
+  // first line of circles
+  wire [15:1] g2, p2;
+  SmallCircle sc0_0(c[0], g[0]);
+  BigCircle bc0[15:1](g2[15:1], p2[15:1], g[15:1], p[15:1], g[14:0], p[14:0]);
+  
+  // second line of circle
+  wire [15:3] g3, p3;
+  SmallCircle sc1[2:1](c[2:1], g2[2:1]);
+  BigCircle bc1[15:3](g3[15:3], p3[15:3], g2[15:3], p2[15:3], g2[13:1], p2[13:1]);
+  
+  // third line of circle
+  wire [15:7] g4, p4;
+  SmallCircle sc2[6:3](c[6:3], g3[6:3]);
+  BigCircle bc2[15:7](g4[15:7], p4[15:7], g3[15:7], p3[15:7], g3[11:3], p3[11:3]);
+
+  // fourth line of circle
+  wire [15:15] g5, p5;
+  SmallCircle sc3[14:7](c[14:7], g4[14:7]);
+  BigCircle bc3_15(g5[15], p5[15], g4[15], p4[15], g4[7], p4[7]);  
+  
+  // fifth line of circle
+  SmallCircle sc4_15(c[15], g5[15]);
+  
+  // last line - triangles
+  Triangle tr0(sum[0], p[0], cin);
+  Triangle tr[15:1](sum[15:1], p[15:1], c[14:0]);
+
+  // generate cout
+  buf #(1) (cout, c[15]);
 
 endmodule
 `default_nettype wire
