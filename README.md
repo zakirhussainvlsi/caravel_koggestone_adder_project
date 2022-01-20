@@ -5,7 +5,7 @@
 | :exclamation: Important Note            |
 |-----------------------------------------|
 
-## Please fill in your project documentation in this README.md file 
+
 
 
 16-bit koggestone adder verilog implementation.
