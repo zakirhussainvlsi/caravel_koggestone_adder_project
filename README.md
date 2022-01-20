@@ -8,4 +8,4 @@
 
 
 
-16-bit koggestone adder verilog implementation.
+16-bit koggestone adder verilog implementation using openlane and skywater 130nm PDK.
