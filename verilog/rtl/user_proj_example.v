@@ -113,7 +113,7 @@ module user_proj_example #(
     assign clk = (~la_oenb[64]) ? la_data_in[64]: wb_clk_i;
     assign rst = (~la_oenb[65]) ? la_data_in[65]: wb_rst_i;
      */
-     KSA16 ins1(sum, cout, a, b);
+    KSA16 ins1(.sum(sum1), .cout(cout1), .a(a1), .b(b1));
 endmodule
 
 module BigCircle(output G, P, input Gi, Pi, GiPrev, PiPrev);
