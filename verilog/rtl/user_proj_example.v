@@ -258,11 +258,11 @@ module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
   //Triangle tr[15:1](sum[15:1], p[15:1], c[14:0]);
     generate for(m2=1; m2<16; m2=m2+1) begin:test7
   //Triangle tr[15:1](sum[15:1], p[15:1], c[14:0]);
-        Triangle tr(sum[m2], p[m2], c[m2-1]);
+        Triangle tr1(sum[m2], p[m2], c[m2-1]);
     end
     endgenerate
 
   // generate cout
-  buf #(1) (cout, c[15]);
+  buf (cout, c[15]);
 endmodule
 `default_nettype wire
