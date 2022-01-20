@@ -195,7 +195,7 @@ module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
   // first line of circles
   wire [15:1] g2, p2;
   SmallCircle sc0_0(c[0], g[0]);
-  BigCircle bc0[15:1](g2[15:1], p2[15:1], g[15:1], p[15:1], g[14:0], p[14:0]);
+  //BigCircle bc0[15:1](g2[15:1], p2[15:1], g[15:1], p[15:1], g[14:0], p[14:0]);
     generate for(j=1; j<16; j=j+1) begin : test2
   //BigCircle bc0[15:1](g2[15:1], p2[15:1], g[15:1], p[15:1], g[14:0], p[14:0]);
         BigCircle bc0(g2[j], p2[j], g[j], p[j], g[j-1], p[j-1]);
@@ -204,8 +204,8 @@ module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
 
   // second line of circle
   wire [15:3] g3, p3;
-  SmallCircle sc1[2:1](c[2:1], g2[2:1]);
-  BigCircle bc1[15:3](g3[15:3], p3[15:3], g2[15:3], p2[15:3], g2[13:1], p2[13:1]);
+//  SmallCircle sc1[2:1](c[2:1], g2[2:1]);
+ // BigCircle bc1[15:3](g3[15:3], p3[15:3], g2[15:3], p2[15:3], g2[13:1], p2[13:1]);
 
     genvar k;
     generate for(k=1; k<3; k=k+1) begin : test2
@@ -222,8 +222,8 @@ module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
     endgenerate
   // third line of circle
   wire [15:7] g4, p4;
-  SmallCircle sc2[6:3](c[6:3], g3[6:3]);
-  BigCircle bc2[15:7](g4[15:7], p4[15:7], g3[15:7], p3[15:7], g3[11:3], p3[11:3]);
+  //SmallCircle sc2[6:3](c[6:3], g3[6:3]);
+  //BigCircle bc2[15:7](g4[15:7], p4[15:7], g3[15:7], p3[15:7], g3[11:3], p3[11:3]);
     genvar j1;
     generate for(j1=3; j1<7; j1=j1+1) begin:test4
   //SmallCircle sc2[6:3](c[6:3], g3[6:3]);
@@ -239,7 +239,7 @@ module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
 
   // fourth line of circle
   wire [15:15] g5, p5;
-  SmallCircle sc3[14:7](c[14:7], g4[14:7]);
+  //SmallCircle sc3[14:7](c[14:7], g4[14:7]);
     genvar m1,m2;
     generate for(m1=7; m1<15; m1=m1+1) begin:test6
 
@@ -255,7 +255,7 @@ module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
 
   // last line - triangles
   Triangle tr0(sum[0], p[0], cin);
-  Triangle tr[15:1](sum[15:1], p[15:1], c[14:0]);
+  //Triangle tr[15:1](sum[15:1], p[15:1], c[14:0]);
     generate for(m2=1; m2<16; m2=m2+1) begin:test7
   //Triangle tr[15:1](sum[15:1], p[15:1], c[14:0]);
         Triangle tr(sum[m2], p[m2], c[m2-1]);
