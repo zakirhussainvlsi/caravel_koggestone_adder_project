@@ -87,7 +87,7 @@ module user_proj_example #(
     assign a1=io_in[15:0];
     assign b1=io_in[31:16];
     assign io_out[15:0]=sum1;
-    assign io_out[16]=cou1;
+    assign io_out[16]=cout1;
     
     
     
