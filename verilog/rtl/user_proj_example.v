@@ -86,7 +86,7 @@ module user_proj_example #(
     assign io_out[15:0]=sum1;
     assign io_out[16]=cout1;
        
-    KSA16 ins1(.sum(sum1), .cout(cout1), .a(a1), .b(b1));
+    KSA16 KAS16(.sum(sum1), .cout(cout1), .a(a1), .b(b1));
 endmodule
 
 module BigCircle(output G, P, input Gi, Pi, GiPrev, PiPrev);
