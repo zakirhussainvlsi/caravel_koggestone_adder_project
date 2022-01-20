@@ -82,7 +82,7 @@ module user_proj_example #(
     
     assign {b1,a1}=[`MPRJ_IO_PADS-7:0] io_in;
     assign io_out={21'd0,cout1,sum1};
-    assign io_oeb={21'd0,17'd1};
+    //assign io_oeb={21'd0,17'd1};
     /*
     wire [31:0] rdata; 
     wire [31:0] wdata;
