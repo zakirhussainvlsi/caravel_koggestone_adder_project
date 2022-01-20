@@ -73,20 +73,22 @@ module user_proj_example #(
     wire [`MPRJ_IO_PADS-1:0] io_out;
     wire [`MPRJ_IO_PADS-1:0] io_oeb;
 
-    wire [15:0] sum1;
-    wire cout1;
-    wire [15:0] a1, b1;
+ //   wire [15:0] sum1;
+ //   wire cout1;
+ //   wire [15:0] a1, b1;
     
     //assign {b1,a1}=[`MPRJ_IO_PADS-7:0] io_in;
     //assign io_out={21'd0,cout1,sum1};
     //assign io_oeb={21'd0,17'd1};
     
-    assign a1=io_in[15:0];
-    assign b1=io_in[31:16];
-    assign io_out[15:0]=sum1;
-    assign io_out[16]=cout1;
+  //  assign a1=io_in[15:0];
+  //  assign b1=io_in[31:16];
+ //   assign io_out[15:0]=sum1;
+ //   assign io_out[16]=cout1;
        
-    KSA16 KSA16(.sum(sum1), .cout(cout1), .a(a1), .b(b1));
+   // KSA16 KSA16ins(.sum(sum1), .cout(cout1), .a(a1), .b(b1));
+    KSA16 KSA16ins(.sum(io_out[15:0]), .cout(io_out[16]), .a(io_in[15:0]), .b(io_in[31:16]));
+    assign io_oeb=0;
 endmodule
 
 module BigCircle(output G, P, input Gi, Pi, GiPrev, PiPrev);
