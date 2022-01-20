@@ -88,7 +88,7 @@ module user_proj_example #(
     assign b1=io_in[31:16];
     assign io_out[15:0]=sum1;
     assign io_out[16]=cout1;
-    
+    assign irq = 3'b000;	// Unused
     
     
     
@@ -136,7 +136,8 @@ endmodule
 
 module SmallCircle(output Ci, input Gi);
   
-  buf  (Ci, Gi);
+ // buf  (Ci, Gi);
+    assign Ci=Gi;
   
 endmodule
 
@@ -272,6 +273,7 @@ module KSA16(output [15:0] sum, output cout, input [15:0] a, b);
     endgenerate
 
   // generate cout
-  buf (cout, c[15]);
+ // buf (cout, c[15]);
+    assign cout=c[15];
 endmodule
 `default_nettype wire
