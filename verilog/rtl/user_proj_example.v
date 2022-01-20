@@ -80,9 +80,18 @@ module user_proj_example #(
     wire cout1;
     wire [15:0] a1, b1;
     
-    assign {b1,a1}=[`MPRJ_IO_PADS-7:0] io_in;
-    assign io_out={21'd0,cout1,sum1};
+    //assign {b1,a1}=[`MPRJ_IO_PADS-7:0] io_in;
+    //assign io_out={21'd0,cout1,sum1};
     //assign io_oeb={21'd0,17'd1};
+    
+    assign a1=io_in[15:0];
+    assign b1=io_in[31:16];
+    assign io_out[15:0]=sum1;
+    assign io_out[16]=cou1;
+    
+    
+    
+    
     /*
     wire [31:0] rdata; 
     wire [31:0] wdata;
