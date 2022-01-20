@@ -119,28 +119,28 @@ endmodule
 module BigCircle(output G, P, input Gi, Pi, GiPrev, PiPrev);
   
   wire e;
-  and #(1) (e, Pi, GiPrev);
-  or #(1) (G, e, Gi);
-  and #(1) (P, Pi, PiPrev);
+  and  (e, Pi, GiPrev);
+  or  (G, e, Gi);
+  and  (P, Pi, PiPrev);
   
 endmodule
 
 module SmallCircle(output Ci, input Gi);
   
-  buf #(1) (Ci, Gi);
+  buf  (Ci, Gi);
   
 endmodule
 
 module Square(output G, P, input Ai, Bi);
   
-  and #(1) (G, Ai, Bi);
-  xor #(2) (P, Ai, Bi);
+  and  (G, Ai, Bi);
+  xor  (P, Ai, Bi);
   
 endmodule
 
 module Triangle(output Si, input Pi, CiPrev);
   
-  xor #(2) (Si, Pi, CiPrev);
+  xor  (Si, Pi, CiPrev);
   
 endmodule
 
